@@ -46,6 +46,7 @@ START_DATE = datetime(2024, 11, 1)
 END_DATE = datetime(2026, 4, 30)
 N_ACCOUNTS = 180
 N_OPPORTUNITIES = 600
+N_RECENT_OPPORTUNITIES = 200  # extra opps concentrated in last 4 months for active pipeline
 N_SALES_REPS = 12
 
 # Output paths (relative to project root)
@@ -325,7 +326,8 @@ def generate_opportunities(accounts_df, reps_df, products_df):
     opp_rows = []
     history_rows = []
 
-    for i in range(1, N_OPPORTUNITIES + 1):
+    total_opps = N_OPPORTUNITIES + N_RECENT_OPPORTUNITIES
+    for i in range(1, total_opps + 1):
         # ----- Pick the participants -----
         account = accounts_df.sample(1).iloc[0]
         product_name = weighted_choice(PRODUCTS)
@@ -339,9 +341,18 @@ def generate_opportunities(accounts_df, reps_df, products_df):
             rep = reps_df.sample(1).iloc[0]
 
         # ----- Initial deal attributes -----
-        created_date = START_DATE + timedelta(
-            days=random.randint(0, (END_DATE - START_DATE).days)
-        )
+        # First N_OPPORTUNITIES are spread across the full 18 months.
+        # Remaining N_RECENT_OPPORTUNITIES are concentrated in the last 4 months
+        # to keep the active pipeline realistically full at the report-as-of date.
+        if i <= N_OPPORTUNITIES:
+            created_date = START_DATE + timedelta(
+                days=random.randint(0, (END_DATE - START_DATE).days)
+            )
+        else:
+            recent_window_start = END_DATE - timedelta(days=120)
+            created_date = recent_window_start + timedelta(
+                days=random.randint(0, 120)
+            )
         deal_size = sample_deal_size(product_name)
 
         # ----- Walk the funnel -----
@@ -441,7 +452,7 @@ def main():
     print(f"  Accounts:     {N_ACCOUNTS}")
     print(f"  Sales reps:   {N_SALES_REPS}")
     print(f"  Products:     {len(PRODUCTS)}")
-    print(f"  Opportunities target: {N_OPPORTUNITIES}")
+    print(f"  Opportunities target: {N_OPPORTUNITIES} historical + {N_RECENT_OPPORTUNITIES} recent")
     print()
 
     # Ensure output directories exist
