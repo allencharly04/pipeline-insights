@@ -340,15 +340,76 @@ Result: a funnel that narrows correctly (54 → 47 → 24 → 20 active deals) w
 
 
 
-\## The four dashboard pages
+## The four dashboard pages
 
+Both Power BI and Streamlit implement the same four pages, computing the same KPIs from the same SQLite database. Power BI screenshots first; Streamlit equivalents below.
 
+### Page 1 — Executive Summary
 
-Both Power BI and Streamlit implement the same four pages, by design.
+Top-of-funnel KPIs and the monthly trend.
 
+**Power BI:**
 
+![Power BI — Executive Summary](docs/screenshots/01_executive_summary.png)
 
-\### Page 1 — Executive Summary
+**Streamlit:**
+
+![Streamlit — Executive Summary](docs/screenshots/streamlit_01_executive.png)
+
+- 4 KPI cards: Active Pipeline (€29.3M), Won Revenue (€27.3M), Win Rate (27.9%), Avg Won Deal Size (€149K)
+- Monthly Won Revenue trend line — shows the Q4 2025 → Q1 2026 acceleration
+- Top 10 won deals — €1.06M largest, PLM Suite + Automotive dominate
+
+### Page 2 — Pipeline Health
+
+What's currently moving, broken down by stage and region.
+
+**Power BI:**
+
+![Power BI — Pipeline Health](docs/screenshots/02_pipeline_health.png)
+
+**Streamlit:**
+
+![Streamlit — Pipeline Health](docs/screenshots/streamlit_02_pipeline_health.png)
+
+- Active deals count (145), raw pipeline (€29.3M), weighted forecast (€9.0M)
+- Funnel: Prospecting €11.9M → Qualified €8.1M → Proposal €5.0M → Negotiation €4.4M
+- Stage × region stacked bar showing DACH dominance in early stages
+- Stage-to-stage conversion rate table
+
+### Page 3 — Segment Analysis
+
+Where revenue comes from — and where it doesn't.
+
+**Power BI:**
+
+![Power BI — Segment Analysis](docs/screenshots/03_segment_analysis.png)
+
+**Streamlit:**
+
+![Streamlit — Segment Analysis](docs/screenshots/streamlit_03_segment_analysis.png)
+
+- Won Revenue by Industry (Automotive €11.6M leads, Aerospace €1.2M trails)
+- Win Rate by Region (DACH 38.9% green → APAC 4.9% red — striking visualization in the Streamlit version with the RdYlGn color scale)
+- Active Pipeline by Product (PLM Suite is 42% of active value)
+- Top 10 sales reps with rates and revenue
+
+### Page 4 — Forecast & Risk
+
+Weighted-pipeline forecast and stuck-deal monitoring.
+
+**Power BI:**
+
+![Power BI — Forecast & Risk](docs/screenshots/04_forecast_risk.png)
+
+**Streamlit:**
+
+![Streamlit — Forecast & Risk](docs/screenshots/streamlit_04_forecast_risk.png)
+
+- Weighted Forecast (€9.0M), Total Pipeline raw (€29.3M), At-Risk Value (€2.6M)
+- Raw vs Weighted bars by stage — gap closes as confidence rises
+- Lost Revenue by Reason donut: "Lost to competitor" + "Budget cut" = €46.6M
+- Top at-risk active deals — open ≥1.5× the median for their stage
 
 
 
